@@ -1,0 +1,249 @@
+//
+//  ContentView.swift
+//  QTradingApp
+//
+//  Created by Dante Sanchez on 12/4/24.
+//
+
+import SwiftUI
+
+struct ContentView: View {
+    // Define the available tabs
+    enum Tab {
+        case home
+        case architecture
+    }
+    
+    // State to keep track of the selected tab
+    @State private var selectedTab: Tab = .home
+    
+    var body: some View {
+        GeometryReader { geometry in
+            let topInset = geometry.safeAreaInsets.top
+            let hasNotch = topInset > 20 // Threshold to detect a notch
+            
+            VStack(spacing: 0) {
+                // Custom Navigation Bar
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        withAnimation {
+                            selectedTab = .home
+                        }
+                    }) {
+                        Text("Home")
+                            .foregroundColor(selectedTab == .home ? .green : .white)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .font(.system(size: 18, weight: .medium))
+                    }
+                    Spacer()
+                    Button(action: {
+                        withAnimation {
+                            selectedTab = .architecture
+                        }
+                    }) {
+                        Text("Architecture")
+                            .foregroundColor(selectedTab == .architecture ? .green : .white)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .font(.system(size: 18, weight: .medium))
+                    }
+                    Spacer()
+                }
+                .padding(.top, hasNotch ? topInset : 0) // Add padding if notch is present
+                .background(
+                    LinearGradient(gradient: Gradient(colors: [Color.gray, Color.black]),
+                                   startPoint: .top,
+                                   endPoint: .bottom)
+                )
+                .frame(height: 50 + (hasNotch ? topInset : 0)) // Adjust height based on notch
+                .shadow(radius: 2)
+                
+                // Content Area
+                ZStack {
+                    switch selectedTab {
+                    case .home:
+                        HomeView()
+                    case .architecture:
+                        ArchitectureView()
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .edgesIgnoringSafeArea(.top) // Ensure the navbar extends to the top edge
+        }
+    }
+}
+
+// Home View with the App Title and List of Tools
+struct HomeView: View {
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("QTradingApp")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .padding(.top, 20) // Adjust padding to avoid overlap with navbar
+                
+                Spacer()
+                
+                // List of Tools
+                List {
+                    NavigationLink(destination: VisualComputerView()) {
+                        Text("Visual Computer on Chart")
+                            .foregroundColor(.blue)
+                    }
+                    NavigationLink(destination: DeepAnalysisView()) {
+                        Text("Deep Analysis")
+                            .foregroundColor(.blue)
+                    }
+                    NavigationLink(destination: BlownAccountCalculatorView()) {
+                        Text("Blown Account Calculator")
+                            .foregroundColor(.blue)
+                    }
+                    NavigationLink(destination: AlertGeneratorView()) {
+                        Text("Alert Generator")
+                            .foregroundColor(.blue)
+                    }
+                }
+                .listStyle(InsetGroupedListStyle())
+                
+                Spacer()
+                // Additional Home content can go here
+                Image(systemName: "globe")
+                    .imageScale(.large)
+                    .foregroundStyle(.tint)
+                Text("Welcome to QTradingApp!")
+                    .font(.title2)
+                    .padding()
+                Spacer()
+            }
+            .padding()
+            .navigationBarHidden(true) // Hide the default navigation bar
+        }
+    }
+}
+
+// Architecture View Placeholder
+struct ArchitectureView: View {
+    var body: some View {
+        VStack {
+            Text("Architecture")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding(.top, 60) // Adjust padding to avoid overlap with navbar
+            Spacer()
+            // Add your Architecture screen content here
+            Image(systemName: "building.2")
+                .imageScale(.large)
+                .foregroundStyle(.tint)
+            Text("Architecture details go here.")
+                .font(.title2)
+                .padding()
+            Spacer()
+        }
+        .padding()
+    }
+}
+
+// Visual Computer on Chart View
+struct VisualComputerView: View {
+    var body: some View {
+        VStack {
+            Text("Visual Computer on Chart")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding()
+            Spacer()
+            // Add your Visual Computer on Chart content here
+            Image(systemName: "chart.bar")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 200)
+                .foregroundColor(.green)
+            Text("Visual Computer on Chart details go here.")
+                .font(.title2)
+                .padding()
+            Spacer()
+        }
+        .padding()
+    }
+}
+
+// Deep Analysis View
+struct DeepAnalysisView: View {
+    var body: some View {
+        VStack {
+            Text("Deep Analysis")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding()
+            Spacer()
+            // Add your Deep Analysis content here
+            Image(systemName: "magnifyingglass")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 200)
+                .foregroundColor(.blue)
+            Text("Deep Analysis details go here.")
+                .font(.title2)
+                .padding()
+            Spacer()
+        }
+        .padding()
+    }
+}
+
+// Blown Account Calculator View
+struct BlownAccountCalculatorView: View {
+    var body: some View {
+        VStack {
+            Text("Blown Account Calculator")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding()
+            Spacer()
+            // Add your Blown Account Calculator content here
+            Image(systemName: "calculator")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 200)
+                .foregroundColor(.orange)
+            Text("Blown Account Calculator details go here.")
+                .font(.title2)
+                .padding()
+            Spacer()
+        }
+        .padding()
+    }
+}
+
+// Alert Generator View
+struct AlertGeneratorView: View {
+    var body: some View {
+        VStack {
+            Text("Alert Generator")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding()
+            Spacer()
+            // Add your Alert Generator content here
+            Image(systemName: "bell")
+                .resizable()
+                .scaledToFit()
+                .frame(height: 200)
+                .foregroundColor(.red)
+            Text("Alert Generator details go here.")
+                .font(.title2)
+                .padding()
+            Spacer()
+        }
+        .padding()
+    }
+}
+
+#Preview {
+    ContentView()
+}
+
